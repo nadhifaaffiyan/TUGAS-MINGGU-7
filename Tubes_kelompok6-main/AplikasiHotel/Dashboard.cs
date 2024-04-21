@@ -479,7 +479,12 @@ private void BtnPesanJasa_Click(object sender, EventArgs e)
 }
 
 // Method untuk memvalidasi jika email yang di masukan valid atau tidak
-private bool IsValidEmail(string email) => new System.Net.Mail.MailAddress(email).Address == email;
+private bool IsValidEmail(string email)
+{
+    return System.Text.RegularExpressions.Regex.IsMatch(email,
+        @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+}
+
 
 
 private void SavePesananData()
