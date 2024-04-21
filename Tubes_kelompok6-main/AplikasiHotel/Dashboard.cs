@@ -648,15 +648,11 @@ namespace AplikasiHotel
             UpdateReviewLabel(); // memanggil fungsi UpdateReviewLabel untuk ditampilkan di label
         }
 
-        private void ShowErrorMessage(string message)
-        {
-            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        private void ShowMessage(string message, string caption, MessageBoxIcon icon)
+{
+    MessageBox.Show(message, caption, MessageBoxButtons.OK, icon);
+}
 
-        private void ShowSuccessMessage(string message)
-        {
-            MessageBox.Show(message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
 
         private void ClearInputFields()
         {
