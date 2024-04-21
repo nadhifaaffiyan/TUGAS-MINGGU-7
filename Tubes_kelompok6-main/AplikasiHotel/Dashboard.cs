@@ -42,8 +42,6 @@ namespace AplikasiHotel
         private Pesanan pesanan;
 
 
-
-
         Dictionary<int, string> menuMakanan = new Dictionary<int, string>()
         {
             { 1, "Nasi Goreng" },
@@ -159,24 +157,18 @@ private void label21_Click(object sender, EventArgs e)
         // Method untuk memperbarui total jumlah yang harus dibayarkan
         private void UpdateTotalAmount()
         {
-            int hargaPerMalam = 0;
-            int totalAmount = 0;
-            int lamaMenginap = Convert.ToInt32(hariNumericUpDown.Value);
-            string selectedJenis = jenisComboBox.SelectedItem.ToString();
-
-            if (jenisKamar.ContainsKey(selectedJenis))
+            if (jenisComboBox.SelectedItem is not null && int.TryParse(hariNumericUpDown.Text, out int lamaMenginap))
             {
-                hargaPerMalam = jenisKamar[selectedJenis];
-                totalAmount = hargaPerMalam * lamaMenginap;
+                string selectedJenis = jenisComboBox.SelectedItem.ToString();
+                totalLabel.Text = (jenisKamar.TryGetValue(selectedJenis, out int hargaPerMalam) ?
+                    (hargaPerMalam * lamaMenginap).ToString() : "0");
             }
             else
             {
-                hargaPerMalam = 0;
-                totalAmount = 0;
+                totalLabel.Text = "0";
             }
-
-            totalLabel.Text = totalAmount.ToString();
         }
+
 
         private bool isDataValid = false; // Flag untuk menandakan validitas data
         private void nextButton_Click(object sender, EventArgs e)
