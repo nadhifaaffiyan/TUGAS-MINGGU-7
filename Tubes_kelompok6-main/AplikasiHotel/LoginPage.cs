@@ -44,7 +44,7 @@ namespace AplikasiHotel
                 WriteIndented = true
             };
 
-            string jsonString = JsonSerializer.Serialize(_config, options);
+            string serializedConfig = JsonSerializer.Serialize(_config, options);
             string fullPath = Path.Combine(_path, _configFileName);
             File.WriteAllText(fullPath, jsonString);
         }
