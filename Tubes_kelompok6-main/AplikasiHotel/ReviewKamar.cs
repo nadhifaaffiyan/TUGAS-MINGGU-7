@@ -21,6 +21,7 @@ namespace AplikasiHotel
         {
             reviews = new List<ReviewKamar<T>>();
         }
+        //menambahkan rating.
 
         public void AddReview(ReviewKamar<T> review)
         {
