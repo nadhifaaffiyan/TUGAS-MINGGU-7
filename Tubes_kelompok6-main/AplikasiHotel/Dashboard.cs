@@ -82,26 +82,18 @@ namespace AplikasiHotel
         }
 
         //button untuk melakukan pemesanan 
-        private void btnPesan_Click(object sender, EventArgs e)
+        private void pesanButton_Click(object sender, EventArgs e)
         {
-            int nomorMakanan;
-            if (int.TryParse(SanitizeInput(inputmakanan.Text), out nomorMakanan))
+            if (int.TryParse(inputmakanan.Text, out int nomorMakanan) && menuMakanan.ContainsKey(nomorMakanan))
             {
-                if (menuMakanan.ContainsKey(nomorMakanan))
-                {
-                    string makanan = menuMakanan[nomorMakanan];
-                    statusPemesanan.Text = "Pemesanan berhasil: " + SanitizeInput(makanan);
-                }
-                else
-                {
-                    statusPemesanan.Text = "Nomor makanan tidak valid";
-                }
+                statusPemesanan.Text = "Pemesanan berhasil: " + menuMakanan[nomorMakanan];
             }
             else
             {
-                statusPemesanan.Text = "Nomor makanan harus berupa angka";
+                statusPemesanan.Text = "Nomor makanan tidak valid atau harus berupa angka";
             }
         }
+
 
         private string SanitizeInput(string input)
         {
