@@ -22,7 +22,7 @@ namespace AplikasiHotel
             {
                 ReadConfig();
             }
-            catch
+            catch (FileNotFoundException)
             {
                 SetDefault();
                 WriteConfig();
