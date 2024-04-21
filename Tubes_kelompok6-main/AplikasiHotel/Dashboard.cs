@@ -68,21 +68,21 @@ namespace AplikasiHotel
 
         //Menampilkan Menu Yang Tersedia 
         private string GetMenuText(Dictionary<int, string> menu)
-{
-    StringBuilder menuText = new StringBuilder("Menu Makanan Tersedia:\n");
+        {
+            StringBuilder menuText = new StringBuilder("Menu Makanan Tersedia:\n");
 
-    foreach (var menuItem in menu)
-    {
-        menuText.AppendLine($"{menuItem.Key}. {SanitizeInput(menuItem.Value)}");
-    }
+            foreach (var menuItem in menu)
+            {
+                menuText.AppendLine($"{menuItem.Key}. {SanitizeInput(menuItem.Value)}");
+            }
 
-    return menuText.ToString();
-}
+            return menuText.ToString();
+        }
 
-private void label21_Click(object sender, EventArgs e)
-{
-    label2.Text = GetMenuText(menuMakanan);
-}
+        private void label21_Click(object sender, EventArgs e)
+        {
+            label2.Text = GetMenuText(menuMakanan);
+        }
 
 
         //button untuk melakukan pemesanan 
@@ -146,7 +146,7 @@ private void label21_Click(object sender, EventArgs e)
         }
 
         // Dictionary untuk memetakan jenis kamar ke harga per malam
-        Dictionary<string, int>  jenisKamar = new Dictionary<string, int>()
+        Dictionary<string, int> jenisKamar = new Dictionary<string, int>()
         {
             { "Single", 750000 },
             { "Double", 1000000 },
@@ -168,6 +168,7 @@ private void label21_Click(object sender, EventArgs e)
                 totalLabel.Text = "0";
             }
         }
+
 
 
         private bool isDataValid = false; // Flag untuk menandakan validitas data
@@ -207,7 +208,7 @@ private void label21_Click(object sender, EventArgs e)
             }
 
             UpdateTotalAmount(); // memanggil fungsi UpdateReviewLabel untuk ditampilkan di label
-           
+
             isDataValid = true; // Set flag menjadi true jika semua kondisi terpenuhi
         }
 
@@ -232,7 +233,7 @@ private void label21_Click(object sender, EventArgs e)
                 return;
             }
 
-            
+
 
             // Memeriksa lama menginap
             int lamaMenginap = Convert.ToInt32(hariNumericUpDown.Value);
@@ -392,7 +393,8 @@ private void label21_Click(object sender, EventArgs e)
             this.Hide();
         }
         //CheckOut
-        private void checkOutButton_Click(object sender, EventArgs e) { 
+        private void checkOutButton_Click(object sender, EventArgs e)
+        {
             string namaPemesan = namaCheckOutTextBox.Text;
             int nomorKamar;
 
@@ -448,12 +450,12 @@ private void label21_Click(object sender, EventArgs e)
             }
         }
 
-       private bool IsValidRoomNumber(int nomorKamar)
-{
-    return (nomorKamar >= 101 && nomorKamar <= 109);
-           (nomorKamar >= 201 && nomorKamar <= 209);
-           (nomorKamar >= 301 && nomorKamar <= 309);
-}
+        private bool IsValidRoomNumber(int nomorKamar)
+        {
+            return (nomorKamar >= 101 && nomorKamar <= 109);
+            (nomorKamar >= 201 && nomorKamar <= 209);
+            (nomorKamar >= 301 && nomorKamar <= 309);
+        }
 
 
 
@@ -480,7 +482,7 @@ private void label21_Click(object sender, EventArgs e)
                 {
                     message = "Anda telah memesan " + selectedItem + ". Terima kasih!";
                     MessageBox.Show(message); // Menampilkan pesan yang cocok dari ListBox
-                    break; 
+                    break;
                 }
             }
         }
@@ -629,9 +631,9 @@ private void label21_Click(object sender, EventArgs e)
         }
 
         private void ShowMessage(string message, string caption, MessageBoxIcon icon)
-{
-    MessageBox.Show(message, caption, MessageBoxButtons.OK, icon);
-}
+        {
+            MessageBox.Show(message, caption, MessageBoxButtons.OK, icon);
+        }
 
 
         private void ClearInputFields()
