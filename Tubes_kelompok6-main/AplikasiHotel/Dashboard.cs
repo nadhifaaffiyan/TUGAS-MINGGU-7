@@ -42,8 +42,6 @@ namespace AplikasiHotel
         private Pesanan pesanan;
 
 
-
-
         Dictionary<int, string> menuMakanan = new Dictionary<int, string>()
         {
             { 1, "Nasi Goreng" },
@@ -153,24 +151,18 @@ namespace AplikasiHotel
         // Method untuk memperbarui total jumlah yang harus dibayarkan
         private void UpdateTotalAmount()
         {
-            int hargaPerMalam = 0;
-            int totalAmount = 0;
-            int lamaMenginap = Convert.ToInt32(hariNumericUpDown.Value);
-            string selectedJenis = jenisComboBox.SelectedItem.ToString();
-
-            if (jenisKamar.ContainsKey(selectedJenis))
+            if (jenisComboBox.SelectedItem is not null && int.TryParse(hariNumericUpDown.Text, out int lamaMenginap))
             {
-                hargaPerMalam = jenisKamar[selectedJenis];
-                totalAmount = hargaPerMalam * lamaMenginap;
+                string selectedJenis = jenisComboBox.SelectedItem.ToString();
+                totalLabel.Text = (jenisKamar.TryGetValue(selectedJenis, out int hargaPerMalam) ?
+                    (hargaPerMalam * lamaMenginap).ToString() : "0");
             }
             else
             {
-                hargaPerMalam = 0;
-                totalAmount = 0;
+                totalLabel.Text = "0";
             }
-
-            totalLabel.Text = totalAmount.ToString();
         }
+
 
         private bool isDataValid = false; // Flag untuk menandakan validitas data
         private void nextButton_Click(object sender, EventArgs e)
@@ -479,34 +471,34 @@ namespace AplikasiHotel
         // FITUR PELAYANAN
         private void BtnPesanJasa_Click(object sender, EventArgs e)
         {
-            string selectedItem = comboBoxJasa.SelectedItem.ToString(); // Mendapatkan item yang dipilih dari ComboBox
+            string selectedItem = comboBoxJasa.SelectedItem?.ToString(); 
             string message = "";
 
-            // Mencari item yang cocok di dalam ListBox
-            foreach (string item in listBoxJasa.Items)
+            if (!string.IsNullOrEmpty(selectedItem))
             {
-                if (item.StartsWith(selectedItem))
+                foreach (string item in listBoxJasa.Items)
                 {
-                    message = "Anda telah memesan " + selectedItem + ". Terima kasih!";
-                    MessageBox.Show(message); // Menampilkan pesan yang cocok dari ListBox
-                    break; 
+                    if (item.StartsWith(selectedItem))
+                    {
+                        message = "Anda telah memesan " + selectedItem + ". Terima kasih!";
+                        MessageBox.Show(message); 
+                        break; 
+                    }
                 }
             }
+            else
+            {
+                MessageBox.Show("Pilih layanan terlebih dahulu.");
+            }
         }
+
         // Method untuk memvalidasi jika email yang di masukan valid atau tidak
-        private bool IsValidEmail(string email)
-        {
-            try
-            {
-                // Mengecek jika inputan user sesuai format email yang benar
-                var mailAddress = new System.Net.Mail.MailAddress(email);
-                return true;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-        }
+       private bool IsValidEmail(string email)
+{
+    return System.Text.RegularExpressions.Regex.IsMatch(email,
+        @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+}
+
 
         private void SavePesananData()
         {
