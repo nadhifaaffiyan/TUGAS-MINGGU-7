@@ -4,7 +4,8 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace AplikasiHotel
+namespace HotelManagementApplication
+
 {
     public partial class LoginPage : Form
     {
