@@ -471,20 +471,27 @@ namespace AplikasiHotel
         // FITUR PELAYANAN
         private void BtnPesanJasa_Click(object sender, EventArgs e)
         {
-            string selectedItem = comboBoxJasa.SelectedItem.ToString(); // Mendapatkan item yang dipilih dari ComboBox
+            string selectedItem = comboBoxJasa.SelectedItem?.ToString(); 
             string message = "";
 
-            // Mencari item yang cocok di dalam ListBox
-            foreach (string item in listBoxJasa.Items)
+            if (!string.IsNullOrEmpty(selectedItem))
             {
-                if (item.StartsWith(selectedItem))
+                foreach (string item in listBoxJasa.Items)
                 {
-                    message = "Anda telah memesan " + selectedItem + ". Terima kasih!";
-                    MessageBox.Show(message); // Menampilkan pesan yang cocok dari ListBox
-                    break; 
+                    if (item.StartsWith(selectedItem))
+                    {
+                        message = "Anda telah memesan " + selectedItem + ". Terima kasih!";
+                        MessageBox.Show(message); 
+                        break; 
+                    }
                 }
             }
+            else
+            {
+                MessageBox.Show("Pilih layanan terlebih dahulu.");
+            }
         }
+
         // Method untuk memvalidasi jika email yang di masukan valid atau tidak
         private bool IsValidEmail(string email)
         {
