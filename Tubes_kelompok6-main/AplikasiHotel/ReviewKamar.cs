@@ -22,9 +22,16 @@ namespace AplikasiHotel
             reviews = new List<ReviewKamar<T>>();
         }
 
-        public void AddReview(ReviewKamar<T> review)
+        public void AddReview(RoomReview<T> review)
         {
-            reviews.Add(review);
+            if (review.Rating < 1 || review.Rating > 5)
+            {
+                Console.WriteLine("Error: Rating must be between 1 and 5.");
+            }
+            else
+            {
+                reviews.Add(review);
+            }
         }
 
         public List<ReviewKamar<T>> GetReviews()
