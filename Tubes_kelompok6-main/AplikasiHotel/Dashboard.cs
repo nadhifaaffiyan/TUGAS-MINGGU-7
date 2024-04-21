@@ -450,20 +450,13 @@ namespace AplikasiHotel
             }
         }
 
-        private bool IsSingleRoomNumber(int nomorKamar)
-        {
-            return nomorKamar >= 101 && nomorKamar <= 109;
-        }
+       private bool IsValidRoomNumber(int nomorKamar)
+{
+    return (nomorKamar >= 101 && nomorKamar <= 109);
+           (nomorKamar >= 201 && nomorKamar <= 209);
+           (nomorKamar >= 301 && nomorKamar <= 309);
+}
 
-        private bool IsDoubleRoomNumber(int nomorKamar)
-        {
-            return nomorKamar >= 201 && nomorKamar <= 209;
-        }
-
-        private bool IsSuiteRoomNumber(int nomorKamar)
-        {
-            return nomorKamar >= 301 && nomorKamar <= 309;
-        }
 
 
         private void namaCheckOutTextBox_TextChanged(object sender, EventArgs e)
