@@ -211,36 +211,33 @@ namespace AplikasiHotel
 
         private void pesanButton_Click(object sender, EventArgs e)
         {
-            // Memeriksa validitas data
-            if (!isDataValid)
+            if (int.TryParse(inputmakanan.Text, out int nomorMakanan) && menuMakanan.ContainsKey(nomorMakanan))
             {
-                MessageBox.Show("Pesanan tidak valid. Lakukan pengecekan terlebih dahulu.");
-                return;
+                statusPemesanan.Text = "Pemesanan berhasil: " + menuMakanan[nomorMakanan];
             }
-
-            // Memeriksa apakah nama dan email telah diisi
-            if (string.IsNullOrEmpty(namaTextBox.Text) || string.IsNullOrEmpty(emailTextBox.Text))
+            else
             {
-                isDataValid = false; // Tandai data tidak valid
-                return;
+                statusPemesanan.Text = "Nomor makanan tidak valid atau harus berupa angka";
             }
+        }
 
 
 
-            // Memeriksa lama menginap
-            int lamaMenginap = Convert.ToInt32(hariNumericUpDown.Value);
+
+        // Memeriksa lama menginap
+        int lamaMenginap = Convert.ToInt32(hariNumericUpDown.Value);
             if (lamaMenginap == 0)
             {
                 isDataValid = false; // Tandai data tidak valid
                 return;
             }
 
-            UpdateTotalAmount();
+    UpdateTotalAmount();
 
-            string selectedJenis = jenisComboBox.SelectedItem.ToString();
-            bool roomFound = false;
-            List<int> nomorKamar = null;
-            List<string> statusKamar = null;
+    string selectedJenis = jenisComboBox.SelectedItem.ToString();
+    bool roomFound = false;
+    List<int> nomorKamar = null;
+    List<string> statusKamar = null;
 
             // Memproses pemesanan berdasarkan tipe kamar yang dipilih
             switch (selectedJenis)
@@ -263,412 +260,412 @@ namespace AplikasiHotel
                     return;
             }
 
-            // Pemesanan kamar
-            for (int i = 0; i < nomorKamar.Count; i++)
-            {
-                if (statusKamar[i] == "tersedia")
-                {
-                    statusKamar[i] = "terisi";
-                    MessageBox.Show("Pesanan kamar " + selectedJenis + " dengan nomor " + nomorKamar[i] + " berhasil.");
-                    roomFound = true;
-                    SavePesananData(); // Panggil fungsi untuk menyimpan data pesanan
-                    break;
-                }
-            }
+// Pemesanan kamar
+for (int i = 0; i < nomorKamar.Count; i++)
+{
+    if (statusKamar[i] == "tersedia")
+    {
+        statusKamar[i] = "terisi";
+        MessageBox.Show("Pesanan kamar " + selectedJenis + " dengan nomor " + nomorKamar[i] + " berhasil.");
+        roomFound = true;
+        SavePesananData(); // Panggil fungsi untuk menyimpan data pesanan
+        break;
+    }
+}
 
-            // Memeriksa apakah kamar tersedia
-            if (!roomFound)
-            {
-                MessageBox.Show("Kamar sudah penuh.");
-                isDataValid = false; // Tandai data tidak valid
-                return;
-            }
+// Memeriksa apakah kamar tersedia
+if (!roomFound)
+{
+    MessageBox.Show("Kamar sudah penuh.");
+    isDataValid = false; // Tandai data tidak valid
+    return;
+}
 
-            // Menandai data valid setelah pemesanan sukses
-            isDataValid = true;
+// Menandai data valid setelah pemesanan sukses
+isDataValid = true;
 
-            // Mengosongkan pengisian
-            namaTextBox.Text = string.Empty;
-            emailTextBox.Text = string.Empty;
-            jenisComboBox.SelectedItem = null;
-            hariNumericUpDown.Value = 0;
+// Mengosongkan pengisian
+namaTextBox.Text = string.Empty;
+emailTextBox.Text = string.Empty;
+jenisComboBox.SelectedItem = null;
+hariNumericUpDown.Value = 0;
         }
 
         //FITUR CEK HARGA KAMAR (informasi Hotel)
         private void btnCek_Click(object sender, EventArgs e)
+{
+    if (comboBoxJenisKamar.SelectedItem.Equals("Single"))
+    {
+        labelInformasiHarga.Text = "750000";
+    }
+    else if (comboBoxJenisKamar.SelectedItem.Equals("Double"))
+    {
+        labelInformasiHarga.Text = "1000000";
+    }
+    else if (comboBoxJenisKamar.SelectedItem.Equals("Suite"))
+    {
+        labelInformasiHarga.Text = "1500000";
+    }
+}
+//FITUR CEK KETERSEDIAN KAMAR
+private void cekKmrButton_Click(object sender, EventArgs e)
+{
+    try
+    {
+        // Mengambil nomor kamar dari input teks
+        int nomorKamar = int.Parse(cekKmrTextBox.Text);
+
+        string statusKamar = string.Empty;
+
+        // Memeriksa nomor kamar pada setiap tipe kamar
+        if (noKmr1.Contains(nomorKamar))
         {
-            if (comboBoxJenisKamar.SelectedItem.Equals("Single"))
-            {
-                labelInformasiHarga.Text = "750000";
-            }
-            else if (comboBoxJenisKamar.SelectedItem.Equals("Double"))
-            {
-                labelInformasiHarga.Text = "1000000";
-            }
-            else if (comboBoxJenisKamar.SelectedItem.Equals("Suite"))
-            {
-                labelInformasiHarga.Text = "1500000";
-            }
+            // Mengambil indeks kamar pada tipe kamar 1
+            int index = noKmr1.IndexOf(nomorKamar);
+            // Mendapatkan status kamar
+            statusKamar = status1[index];
         }
-        //FITUR CEK KETERSEDIAN KAMAR
-        private void cekKmrButton_Click(object sender, EventArgs e)
+        else if (noKmr2.Contains(nomorKamar))
         {
-            try
-            {
-                // Mengambil nomor kamar dari input teks
-                int nomorKamar = int.Parse(cekKmrTextBox.Text);
-
-                string statusKamar = string.Empty;
-
-                // Memeriksa nomor kamar pada setiap tipe kamar
-                if (noKmr1.Contains(nomorKamar))
-                {
-                    // Mengambil indeks kamar pada tipe kamar 1
-                    int index = noKmr1.IndexOf(nomorKamar);
-                    // Mendapatkan status kamar
-                    statusKamar = status1[index];
-                }
-                else if (noKmr2.Contains(nomorKamar))
-                {
-                    // Mengambil indeks kamar pada tipe kamar 2
-                    int index = noKmr2.IndexOf(nomorKamar);
-                    // Mendapatkan status kamar
-                    statusKamar = status2[index];
-                }
-                else if (noKmr3.Contains(nomorKamar))
-                {
-                    // Mengambil indeks kamar pada tipe kamar 3
-                    int index = noKmr3.IndexOf(nomorKamar);
-                    // Mendapatkan status kamar
-                    statusKamar = status3[index];
-                }
-                else
-                {
-                    // Jika nomor kamar tidak ditemukan
-                    statusKmrLabel.Text = "No kamar tidak ada";
-                    return;
-                }
-
-                // Menampilkan status kamar berdasarkan nilai statusKamar
-                if (statusKamar == "tersedia")
-                {
-                    statusKmrLabel.Text = "Kamar Tersedia";
-                }
-                else if (statusKamar == "terisi")
-                {
-                    statusKmrLabel.Text = "Kamar Terisi";
-                }
-            }
-            catch (Exception ex)
-            {
-                // Jika input tidak valid (bukan angka)
-                statusKmrLabel.Text = "Input Angka!";
-            }
+            // Mengambil indeks kamar pada tipe kamar 2
+            int index = noKmr2.IndexOf(nomorKamar);
+            // Mendapatkan status kamar
+            statusKamar = status2[index];
+        }
+        else if (noKmr3.Contains(nomorKamar))
+        {
+            // Mengambil indeks kamar pada tipe kamar 3
+            int index = noKmr3.IndexOf(nomorKamar);
+            // Mendapatkan status kamar
+            statusKamar = status3[index];
+        }
+        else
+        {
+            // Jika nomor kamar tidak ditemukan
+            statusKmrLabel.Text = "No kamar tidak ada";
+            return;
         }
 
-
-        private void statusKmrLabel_Click(object sender, EventArgs e)
+        // Menampilkan status kamar berdasarkan nilai statusKamar
+        if (statusKamar == "tersedia")
         {
-
+            statusKmrLabel.Text = "Kamar Tersedia";
         }
-
-        private void cekKmrTextBox_TextChanged(object sender, EventArgs e)
+        else if (statusKamar == "terisi")
         {
-
+            statusKmrLabel.Text = "Kamar Terisi";
         }
+    }
+    catch (Exception ex)
+    {
+        // Jika input tidak valid (bukan angka)
+        statusKmrLabel.Text = "Input Angka!";
+    }
+}
 
-        // Logout
-        private void logOutButton_Click(object sender, EventArgs e)
-        {
-            LoginPage loginPage = new LoginPage();
-            loginPage.Show();
-            this.Hide();
-        }
-        //CheckOut
-        private void checkOutButton_Click(object sender, EventArgs e)
-        {
-            string namaPemesan = namaCheckOutTextBox.Text;
-            int nomorKamar;
 
-            if (int.TryParse(noKamarCheckOutTextBox.Text, out nomorKamar))
+private void statusKmrLabel_Click(object sender, EventArgs e)
+{
+
+}
+
+private void cekKmrTextBox_TextChanged(object sender, EventArgs e)
+{
+
+}
+
+// Logout
+private void logOutButton_Click(object sender, EventArgs e)
+{
+    LoginPage loginPage = new LoginPage();
+    loginPage.Show();
+    this.Hide();
+}
+//CheckOut
+private void checkOutButton_Click(object sender, EventArgs e)
+{
+    string namaPemesan = namaCheckOutTextBox.Text;
+    int nomorKamar;
+
+    if (int.TryParse(noKamarCheckOutTextBox.Text, out nomorKamar))
+    {
+        if (IsSingleRoomNumber(nomorKamar))
+        {
+            int index = nomorKamar - 101;
+            if (status1[index] == "terisi")
             {
-                if (IsSingleRoomNumber(nomorKamar))
-                {
-                    int index = nomorKamar - 101;
-                    if (status1[index] == "terisi")
-                    {
-                        status1[index] = "tersedia";
-                        MessageBox.Show($"Check out berhasil untuk kamar nomor {nomorKamar}");
-                    }
-                    else
-                    {
-                        MessageBox.Show($"Kamar dengan nomor {nomorKamar} belum dipesan");
-                    }
-                }
-                else if (IsDoubleRoomNumber(nomorKamar))
-                {
-                    int index = nomorKamar - 201;
-                    if (status2[index] == "terisi")
-                    {
-                        status2[index] = "tersedia";
-                        MessageBox.Show($"Check out berhasil untuk kamar nomor {nomorKamar}");
-                    }
-                    else
-                    {
-                        MessageBox.Show($"Kamar dengan nomor {nomorKamar} belum dipesan");
-                    }
-                }
-                else if (IsSuiteRoomNumber(nomorKamar))
-                {
-                    int index = nomorKamar - 301;
-                    if (status3[index] == "terisi")
-                    {
-                        status3[index] = "tersedia";
-                        MessageBox.Show($"Check out berhasil untuk kamar nomor {nomorKamar}");
-                    }
-                    else
-                    {
-                        MessageBox.Show($"Kamar dengan nomor {nomorKamar} belum dipesan");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Nomor kamar tidak valid");
-                }
+                status1[index] = "tersedia";
+                MessageBox.Show($"Check out berhasil untuk kamar nomor {nomorKamar}");
             }
             else
             {
-                MessageBox.Show("Nomor kamar harus berupa angka");
+                MessageBox.Show($"Kamar dengan nomor {nomorKamar} belum dipesan");
             }
         }
-
-        private bool IsValidRoomNumber(int nomorKamar)
+        else if (IsDoubleRoomNumber(nomorKamar))
         {
-            return (nomorKamar >= 101 && nomorKamar <= 109);
-            (nomorKamar >= 201 && nomorKamar <= 209);
-            (nomorKamar >= 301 && nomorKamar <= 309);
-        }
-
-
-
-        private void namaCheckOutTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void noKamarCheckOutTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        // FITUR PELAYANAN
-        private void BtnPesanJasa_Click(object sender, EventArgs e)
-        {
-            string selectedItem = comboBoxJasa.SelectedItem.ToString(); // Mendapatkan item yang dipilih dari ComboBox
-            string message = "";
-
-            // Mencari item yang cocok di dalam ListBox
-            foreach (string item in listBoxJasa.Items)
+            int index = nomorKamar - 201;
+            if (status2[index] == "terisi")
             {
-                if (item.StartsWith(selectedItem))
-                {
-                    message = "Anda telah memesan " + selectedItem + ". Terima kasih!";
-                    MessageBox.Show(message); // Menampilkan pesan yang cocok dari ListBox
-                    break;
-                }
+                status2[index] = "tersedia";
+                MessageBox.Show($"Check out berhasil untuk kamar nomor {nomorKamar}");
+            }
+            else
+            {
+                MessageBox.Show($"Kamar dengan nomor {nomorKamar} belum dipesan");
             }
         }
-        // Method untuk memvalidasi jika email yang di masukan valid atau tidak
-        private bool IsValidEmail(string email) => new System.Net.Mail.MailAddress(email).Address == email;
-
-
-        private void SavePesananData()
+        else if (IsSuiteRoomNumber(nomorKamar))
         {
-            // Memeriksa apakah nama dan email telah diisi(secure code)
-            if (string.IsNullOrEmpty(namaTextBox.Text) || string.IsNullOrEmpty(emailTextBox.Text))
+            int index = nomorKamar - 301;
+            if (status3[index] == "terisi")
             {
-                MessageBox.Show("Data belum tersedia.");
-                return;
+                status3[index] = "tersedia";
+                MessageBox.Show($"Check out berhasil untuk kamar nomor {nomorKamar}");
             }
-
-            // Mengambil data yang telah dipilih oleh pengguna
-            string nama = namaTextBox.Text;
-            string email = emailTextBox.Text;
-            string jenisKamar = jenisComboBox.SelectedItem?.ToString();
-            int lamaMenginap = Convert.ToInt32(hariNumericUpDown.Value);
-            int totalHarga = Convert.ToInt32(totalLabel.Text);
-
-            // Membuat objek Pesanan baru
-            Pesanan pesananBaru = new Pesanan
+            else
             {
-                Nama = nama,
-                Email = email,
-                JenisKamar = jenisKamar,
-                LamaMenginap = lamaMenginap,
-                TotalAmount = totalHarga
-            };
-
-            // Memeriksa apakah data pesanan baru berbeda dengan pesanan sebelumnya
-            if (!IsPesananAlreadyExists(pesananBaru))
-            {
-                // Menambahkan pesanan baru ke daftarPesanan
-                daftarPesanan.Add(pesananBaru);
-
-                // Menambahkan data pemesanan ke dataGridView1
-                dataGridView1.Rows.Add(pesananBaru.Nama, pesananBaru.Email, pesananBaru.JenisKamar,
-                    pesananBaru.TotalAmount, pesananBaru.LamaMenginap);
+                MessageBox.Show($"Kamar dengan nomor {nomorKamar} belum dipesan");
             }
         }
-
-        // FITUR RIWAYAT RESERVASI
-        private void btnRiwayat_Click(object sender, EventArgs e)
+        else
         {
-            SavePesananData();
+            MessageBox.Show("Nomor kamar tidak valid");
         }
+    }
+    else
+    {
+        MessageBox.Show("Nomor kamar harus berupa angka");
+    }
+}
+
+private bool IsValidRoomNumber(int nomorKamar)
+{
+    return (nomorKamar >= 101 && nomorKamar <= 109);
+    (nomorKamar >= 201 && nomorKamar <= 209);
+    (nomorKamar >= 301 && nomorKamar <= 309);
+}
 
 
-        // Method untuk mengecek apakah data reservasi sudah masuk datagrid atau belum 
-        // untuk mencegah duplikasi (secure code)
-        private bool IsPesananAlreadyExists(Pesanan pesanan)
+
+private void namaCheckOutTextBox_TextChanged(object sender, EventArgs e)
+{
+
+}
+
+private void noKamarCheckOutTextBox_TextChanged(object sender, EventArgs e)
+{
+
+}
+
+// FITUR PELAYANAN
+private void BtnPesanJasa_Click(object sender, EventArgs e)
+{
+    string selectedItem = comboBoxJasa.SelectedItem.ToString(); // Mendapatkan item yang dipilih dari ComboBox
+    string message = "";
+
+    // Mencari item yang cocok di dalam ListBox
+    foreach (string item in listBoxJasa.Items)
+    {
+        if (item.StartsWith(selectedItem))
         {
-            foreach (Pesanan pesananExisting in daftarPesanan)
-            {
-                // perbandingan antara data pesanan baru dengan pesanan yang sudah ada
-                if (pesanan.Nama == pesananExisting.Nama &&
-                    pesanan.Email == pesananExisting.Email &&
-                    pesanan.JenisKamar == pesananExisting.JenisKamar &&
-                    pesanan.LamaMenginap == pesananExisting.LamaMenginap &&
-                    pesanan.TotalAmount == pesananExisting.TotalAmount)
-                {
-                    return true; // Pesanan sudah ada dalam daftarPesanan
-                }
-            }
-            return false; // Pesanan belum ada dalam daftarPesanan
-
+            message = "Anda telah memesan " + selectedItem + ". Terima kasih!";
+            MessageBox.Show(message); // Menampilkan pesan yang cocok dari ListBox
+            break;
         }
+    }
+}
+// Method untuk memvalidasi jika email yang di masukan valid atau tidak
+private bool IsValidEmail(string email) => new System.Net.Mail.MailAddress(email).Address == email;
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+
+private void SavePesananData()
+{
+    // Memeriksa apakah nama dan email telah diisi(secure code)
+    if (string.IsNullOrEmpty(namaTextBox.Text) || string.IsNullOrEmpty(emailTextBox.Text))
+    {
+        MessageBox.Show("Data belum tersedia.");
+        return;
+    }
+
+    // Mengambil data yang telah dipilih oleh pengguna
+    string nama = namaTextBox.Text;
+    string email = emailTextBox.Text;
+    string jenisKamar = jenisComboBox.SelectedItem?.ToString();
+    int lamaMenginap = Convert.ToInt32(hariNumericUpDown.Value);
+    int totalHarga = Convert.ToInt32(totalLabel.Text);
+
+    // Membuat objek Pesanan baru
+    Pesanan pesananBaru = new Pesanan
+    {
+        Nama = nama,
+        Email = email,
+        JenisKamar = jenisKamar,
+        LamaMenginap = lamaMenginap,
+        TotalAmount = totalHarga
+    };
+
+    // Memeriksa apakah data pesanan baru berbeda dengan pesanan sebelumnya
+    if (!IsPesananAlreadyExists(pesananBaru))
+    {
+        // Menambahkan pesanan baru ke daftarPesanan
+        daftarPesanan.Add(pesananBaru);
+
+        // Menambahkan data pemesanan ke dataGridView1
+        dataGridView1.Rows.Add(pesananBaru.Nama, pesananBaru.Email, pesananBaru.JenisKamar,
+            pesananBaru.TotalAmount, pesananBaru.LamaMenginap);
+    }
+}
+
+// FITUR RIWAYAT RESERVASI
+private void btnRiwayat_Click(object sender, EventArgs e)
+{
+    SavePesananData();
+}
+
+
+// Method untuk mengecek apakah data reservasi sudah masuk datagrid atau belum 
+// untuk mencegah duplikasi (secure code)
+private bool IsPesananAlreadyExists(Pesanan pesanan)
+{
+    foreach (Pesanan pesananExisting in daftarPesanan)
+    {
+        // perbandingan antara data pesanan baru dengan pesanan yang sudah ada
+        if (pesanan.Nama == pesananExisting.Nama &&
+            pesanan.Email == pesananExisting.Email &&
+            pesanan.JenisKamar == pesananExisting.JenisKamar &&
+            pesanan.LamaMenginap == pesananExisting.LamaMenginap &&
+            pesanan.TotalAmount == pesananExisting.TotalAmount)
         {
-
+            return true; // Pesanan sudah ada dalam daftarPesanan
         }
+    }
+    return false; // Pesanan belum ada dalam daftarPesanan
 
-        HotelReviewSystem<int> hotelReviews = new HotelReviewSystem<int>();
+}
 
-        private void SubmitReviewButton_Click(object sender, EventArgs e)
-        {
-            int roomNumber;
-            string submitUlasan = roomNumberTextBox.Text;
+private void textBox2_TextChanged(object sender, EventArgs e)
+{
 
-            bool isValidRoomNumber = int.TryParse(submitUlasan, out roomNumber) &&
-                ((roomNumber >= 101 && roomNumber <= 109) ||
-                 (roomNumber >= 201 && roomNumber <= 209) ||
-                 (roomNumber >= 301 && roomNumber <= 309));
+}
 
-            if (!isValidRoomNumber)
-            {
-                ShowErrorMessage("Nomor Kamar tidak valid. Mohon masukkan angka antara 101 - 109, 201 - 209, 301 - 309.");
-                return;
-            }
+HotelReviewSystem<int> hotelReviews = new HotelReviewSystem<int>();
 
-            int rating;
-            string ratingInput = ratingTextBox.Text;
+private void SubmitReviewButton_Click(object sender, EventArgs e)
+{
+    int roomNumber;
+    string submitUlasan = roomNumberTextBox.Text;
 
-            bool isValidRating = int.TryParse(ratingInput, out rating) && rating >= 1 && rating <= 5;
+    bool isValidRoomNumber = int.TryParse(submitUlasan, out roomNumber) &&
+        ((roomNumber >= 101 && roomNumber <= 109) ||
+         (roomNumber >= 201 && roomNumber <= 209) ||
+         (roomNumber >= 301 && roomNumber <= 309));
 
-            if (!isValidRating)
-            {
-                ShowErrorMessage("Rating tidak valid. Mohon masukkan angka antara 1 hingga 5.");
-                return;
-            }
+    if (!isValidRoomNumber)
+    {
+        ShowErrorMessage("Nomor Kamar tidak valid. Mohon masukkan angka antara 101 - 109, 201 - 209, 301 - 309.");
+        return;
+    }
 
-            string comment = commentTextBox.Text;
+    int rating;
+    string ratingInput = ratingTextBox.Text;
 
-            ReviewKamar<int> review = new ReviewKamar<int>
-            {
-                RoomNumber = roomNumber,
-                Rating = rating,
-                Comment = comment
-            };
+    bool isValidRating = int.TryParse(ratingInput, out rating) && rating >= 1 && rating <= 5;
 
-            hotelReviews.AddReview(review);
-            ShowSuccessMessage("Ulasan berhasil ditambahkan.");
+    if (!isValidRating)
+    {
+        ShowErrorMessage("Rating tidak valid. Mohon masukkan angka antara 1 hingga 5.");
+        return;
+    }
 
-            UpdateReviewLabel(); //update label pada fitur lihat ulasan
+    string comment = commentTextBox.Text;
 
-            ClearInputFields(); // mengosongkan inputan
-        }
+    ReviewKamar<int> review = new ReviewKamar<int>
+    {
+        RoomNumber = roomNumber,
+        Rating = rating,
+        Comment = comment
+    };
 
-        private void UpdateReviewLabel()
-        {
-            StringBuilder sb = new StringBuilder();
+    hotelReviews.AddReview(review);
+    ShowSuccessMessage("Ulasan berhasil ditambahkan.");
 
-            List<ReviewKamar<int>> allReviews = hotelReviews.GetReviews();
+    UpdateReviewLabel(); //update label pada fitur lihat ulasan
 
-            sb.AppendLine("-- Ulasan Kamar --");
-            sb.AppendLine();
+    ClearInputFields(); // mengosongkan inputan
+}
 
-            foreach (ReviewKamar<int> review in allReviews)
-            {
-                sb.AppendFormat("Kamar {0}:\n", review.RoomNumber);
-                sb.AppendFormat("Rating: {0}/5\n", review.Rating);
-                sb.AppendFormat("Komentar: {0}\n\n", review.Comment);
-            }
+private void UpdateReviewLabel()
+{
+    StringBuilder sb = new StringBuilder();
 
-            reviewLabel.Text = sb.ToString(); // mengupdate teks yang ditampilkan pada kontrol
-        }
+    List<ReviewKamar<int>> allReviews = hotelReviews.GetReviews();
 
-        private void reviewLabel_Click(object sender, EventArgs e)
-        {
-            UpdateReviewLabel(); // memanggil fungsi UpdateReviewLabel untuk ditampilkan di label
-        }
+    sb.AppendLine("-- Ulasan Kamar --");
+    sb.AppendLine();
 
-        private void ShowMessage(string message, string caption, MessageBoxIcon icon)
-        {
-            MessageBox.Show(message, caption, MessageBoxButtons.OK, icon);
-        }
+    foreach (ReviewKamar<int> review in allReviews)
+    {
+        sb.AppendFormat("Kamar {0}:\n", review.RoomNumber);
+        sb.AppendFormat("Rating: {0}/5\n", review.Rating);
+        sb.AppendFormat("Komentar: {0}\n\n", review.Comment);
+    }
+
+    reviewLabel.Text = sb.ToString(); // mengupdate teks yang ditampilkan pada kontrol
+}
+
+private void reviewLabel_Click(object sender, EventArgs e)
+{
+    UpdateReviewLabel(); // memanggil fungsi UpdateReviewLabel untuk ditampilkan di label
+}
+
+private void ShowMessage(string message, string caption, MessageBoxIcon icon)
+{
+    MessageBox.Show(message, caption, MessageBoxButtons.OK, icon);
+}
 
 
-        private void ClearInputFields()
-        {
-            roomNumberTextBox.Text = string.Empty;
-            ratingTextBox.Text = string.Empty;
-            commentTextBox.Text = string.Empty;
-        }
+private void ClearInputFields()
+{
+    roomNumberTextBox.Text = string.Empty;
+    ratingTextBox.Text = string.Empty;
+    commentTextBox.Text = string.Empty;
+}
 
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
+private void textBox3_TextChanged(object sender, EventArgs e)
+{
 
-        }
+}
 
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
+private void textBox4_TextChanged(object sender, EventArgs e)
+{
 
-        }
+}
 
-        private void tabPage6_Click(object sender, EventArgs e)
-        {
+private void tabPage6_Click(object sender, EventArgs e)
+{
 
-        }
+}
 
-        private void informasiTab_Click(object sender, EventArgs e)
-        {
+private void informasiTab_Click(object sender, EventArgs e)
+{
 
-        }
+}
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
+private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+{
 
-        }
+}
 
-        private void label24_Click(object sender, EventArgs e)
-        {
+private void label24_Click(object sender, EventArgs e)
+{
 
-        }
+}
 
-        private void pesanKmrTab_Click(object sender, EventArgs e)
-        {
+private void pesanKmrTab_Click(object sender, EventArgs e)
+{
 
-        }
+}
     }
 }
