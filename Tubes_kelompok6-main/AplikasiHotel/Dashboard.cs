@@ -294,17 +294,13 @@ hariNumericUpDown.Value = 0;
         //FITUR CEK HARGA KAMAR (informasi Hotel)
         private void btnCek_Click(object sender, EventArgs e)
 {
-    if (comboBoxJenisKamar.SelectedItem.Equals("Single"))
+    if (jenisKamar.TryGetValue(comboBoxJenisKamar.SelectedItem.ToString(), out int harga))
     {
-        labelInformasiHarga.Text = "750000";
+        labelInformasiHarga.Text = harga.ToString();
     }
-    else if (comboBoxJenisKamar.SelectedItem.Equals("Double"))
+    else
     {
-        labelInformasiHarga.Text = "1000000";
-    }
-    else if (comboBoxJenisKamar.SelectedItem.Equals("Suite"))
-    {
-        labelInformasiHarga.Text = "1500000";
+        labelInformasiHarga.Text = "0";
     }
 }
 //FITUR CEK KETERSEDIAN KAMAR
@@ -461,20 +457,27 @@ private void noKamarCheckOutTextBox_TextChanged(object sender, EventArgs e)
 // FITUR PELAYANAN
 private void BtnPesanJasa_Click(object sender, EventArgs e)
 {
-    string selectedItem = comboBoxJasa.SelectedItem.ToString(); // Mendapatkan item yang dipilih dari ComboBox
+    string selectedItem = comboBoxJasa.SelectedItem?.ToString(); 
     string message = "";
 
-    // Mencari item yang cocok di dalam ListBox
-    foreach (string item in listBoxJasa.Items)
+    if (!string.IsNullOrEmpty(selectedItem))
     {
-        if (item.StartsWith(selectedItem))
+        foreach (string item in listBoxJasa.Items)
         {
-            message = "Anda telah memesan " + selectedItem + ". Terima kasih!";
-            MessageBox.Show(message); // Menampilkan pesan yang cocok dari ListBox
-            break;
+            if (item.StartsWith(selectedItem))
+            {
+                message = "Anda telah memesan " + selectedItem + ". Terima kasih!";
+                MessageBox.Show(message); 
+                break; 
+            }
         }
     }
+    else
+    {
+        MessageBox.Show("Pilih layanan terlebih dahulu.");
+    }
 }
+
 // Method untuk memvalidasi jika email yang di masukan valid atau tidak
 private bool IsValidEmail(string email) => new System.Net.Mail.MailAddress(email).Address == email;
 
