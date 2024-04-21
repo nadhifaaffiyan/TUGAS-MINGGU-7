@@ -69,17 +69,23 @@ namespace AplikasiHotel
         //FITUR PESAN MAKAN
 
         //Menampilkan Menu Yang Tersedia 
-        private void label21_Click(object sender, EventArgs e)
-        {
-            string menuText = "Menu Makanan Tersedia:\n";
+        private string GetMenuText(Dictionary<int, string> menu)
+{
+    StringBuilder menuText = new StringBuilder("Menu Makanan Tersedia:\n");
 
-            foreach (var menuItem in menuMakanan)
-            {
-                menuText += $"{menuItem.Key}. {SanitizeInput(menuItem.Value)}\n";
-            }
+    foreach (var menuItem in menu)
+    {
+        menuText.AppendLine($"{menuItem.Key}. {SanitizeInput(menuItem.Value)}");
+    }
 
-            label2.Text = menuText;
-        }
+    return menuText.ToString();
+}
+
+private void label21_Click(object sender, EventArgs e)
+{
+    label2.Text = GetMenuText(menuMakanan);
+}
+
 
         //button untuk melakukan pemesanan 
         private void btnPesan_Click(object sender, EventArgs e)
