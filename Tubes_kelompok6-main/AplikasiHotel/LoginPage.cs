@@ -23,11 +23,12 @@ namespace HotelManagementApplication
             {
                 ReadConfig();
             }
-            catch
+            catch (FileNotFoundException)
             {
                 SetDefault();
                 WriteConfig();
             }
+
         }
 
         // Penamaan Pascal Case untuk method 'ReadConfig'
