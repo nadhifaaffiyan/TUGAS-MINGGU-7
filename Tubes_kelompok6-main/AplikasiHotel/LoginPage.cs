@@ -111,7 +111,7 @@ namespace AplikasiHotel
                 return;
             }
 
-            if (_config.Username == username && _config.Password == password)
+            if (IsValidUser(username, password))
             {
                 Dashboard ds = new Dashboard();
                 ds.Show();
