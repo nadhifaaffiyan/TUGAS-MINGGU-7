@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AplikasiHotel
 {
-    public class ReviewKamar<T>
+    public class RoomReview<T>
     {
         public T RoomNumber { get; set; }
         public int Rating { get; set; }
