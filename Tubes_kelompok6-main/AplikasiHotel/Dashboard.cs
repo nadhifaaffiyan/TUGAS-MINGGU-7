@@ -495,18 +495,11 @@ namespace AplikasiHotel
         }
         // Method untuk memvalidasi jika email yang di masukan valid atau tidak
         private bool IsValidEmail(string email)
-        {
-            try
-            {
-                // Mengecek jika inputan user sesuai format email yang benar
-                var mailAddress = new System.Net.Mail.MailAddress(email);
-                return true;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-        }
+{
+    return System.Text.RegularExpressions.Regex.IsMatch(email,
+        @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+}
+
 
         private void SavePesananData()
         {
