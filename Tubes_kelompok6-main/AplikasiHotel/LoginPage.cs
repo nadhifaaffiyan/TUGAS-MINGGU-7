@@ -44,7 +44,7 @@ namespace AplikasiHotel
                 WriteIndented = true
             };
 
-            string jsonString = JsonSerializer.Serialize(_config, options);
+            string serializedConfig = JsonSerializer.Serialize(_config, options);
             string fullPath = Path.Combine(_path, _configFileName);
             File.WriteAllText(fullPath, jsonString);
         }
@@ -105,7 +105,7 @@ namespace AplikasiHotel
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text.Trim();
 
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show("Input tidak boleh kosong");
                 return;
