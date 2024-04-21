@@ -149,12 +149,12 @@ namespace AplikasiHotel
 
 
         // Method untuk memperbarui total jumlah yang harus dibayarkan
-       private void UpdateTotalAmount()
+        private void UpdateTotalAmount()
         {
             if (jenisComboBox.SelectedItem is not null && int.TryParse(hariNumericUpDown.Text, out int lamaMenginap))
             {
-               string selectedJenis = jenisComboBox.SelectedItem.ToString();
-               totalLabel.Text = (jenisKamar.TryGetValue(selectedJenis, out int hargaPerMalam) ?
+                string selectedJenis = jenisComboBox.SelectedItem.ToString();
+                totalLabel.Text = (jenisKamar.TryGetValue(selectedJenis, out int hargaPerMalam) ?
                     (hargaPerMalam * lamaMenginap).ToString() : "0");
             }
             else
